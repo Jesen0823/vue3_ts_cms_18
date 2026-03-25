@@ -240,3 +240,7 @@ npx husky add .husky/commit-msg "npx --no-install commitlint --edit $1"
 ```
 
 在`package.json`添加命令`"commit": "cz"`，然后提交可以使用`npm run commit`
+
+#### 2.7 vue.config.js配置
+
+大部分配置参数，都是对webpack的配置，[官网](https://cli.vuejs.org/zh/config/)
