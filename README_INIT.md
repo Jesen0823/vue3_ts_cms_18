@@ -158,3 +158,85 @@ extends: [
 npm run lint
 ```
 
+#### 2.5 commitizen
+
+如果每次手动来编写commit 是比较廉烦的事情，我们可以使用一个工具：Commitizen
+
+> Commitizen是一个帮助我们编写规范commitmessage的工具；
+>
+> 1. 安装Commitizen
+>    `npm install commitizen -D`
+>
+> 2. 安装cz-conventional-changelog，并且初始化cz-conventional-changelog:
+>
+>    这个命令会帮助我们安装cz-conventional-changelog,
+>
+>    `npx commitizen init cz-conventional-changelog --save-dev --save-exact`
+>
+>    并且在package.json中进行配置：
+>
+>    ```json
+>    "config": {
+>        "commitizen": {
+>          "path": "./node_modules/cz-conventional-changelog"
+>        }
+>      }
+>    ```
+
+这个时候我们提交代码，需要先执行`git add .`，然后执行`npx cz`，会提示手动选择提交类型，
+
+* 第一步是选择type，本次更新的类型
+
+| Type     | 作用                                                         |
+| -------- | ------------------------------------------------------------ |
+| feat     | 新增特性 (feature)                                           |
+| fix      | 修复 Bug(bug fix)                                            |
+| docs     | 修改文档 (documentation)                                     |
+| style    | 代码格式修改(white-space, formatting, missing semi colons, etc) |
+| refactor | 代码重构(refactor)                                           |
+| perf     | 改善性能(A code change that improves performance)            |
+| test     | 测试(when adding missing tests)                              |
+| build    | 变更项目构建或外部依赖（例如 scopes: webpack、gulp、npm 等） |
+| ci       | 更改持续集成软件的配置文件和 package 中的 scripts 命令，例如 scopes: Travis, Circle 等 |
+| chore    | 变更构建流程或辅助工具(比如更改测试环境)                     |
+| revert   | 代码回退                                                     |
+
+* 第二步选择本次修改的范围（作用域）
+
+* 第三步选择提交的信息
+
+* 第四步提交详细的描述信息
+
+* 第五步是否是一次重大的更改
+
+* 第六步是否影响某个open issue
+
+我们也可以在scripts中构建一个命令来执行 cz：
+
+#### 2.6. 代码提交验证
+
+如果我们按照cz来规范了提交风格，但是依然有同事通过 `git commit` 按照不规范的格式提交应该怎么办呢？
+
+* 我们可以通过commitlint来限制提交；
+
+1.安装 @commitlint/config-conventional 和 @commitlint/cli
+
+```shell
+npm i @commitlint/config-conventional @commitlint/cli -D
+```
+
+2.在根目录创建commitlint.config.js文件，配置commitlint
+
+```js
+module.exports = {
+  extends: ['@commitlint/config-conventional']
+}
+```
+
+3.使用husky生成commit-msg文件，验证提交信息：
+
+```shell
+npx husky add .husky/commit-msg "npx --no-install commitlint --edit $1"
+```
+
+在`package.json`添加命令`"commit": "cz"`，然后提交可以使用`npm run commit`
