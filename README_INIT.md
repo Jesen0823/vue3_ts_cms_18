@@ -140,7 +140,7 @@ extends: [
 >
 > 如何使用husky呢？
 > 这里我们可以使用自动配置命令：
-> `npx husky-init && npm install`
+> `npx husky-init && npm install`或`npx husky-init '&&' npm install`
 >
 >  这里会做三件事：
 > 1.安装husky相关的依赖：
@@ -310,3 +310,140 @@ npm install vuex@next
 ```shell
 npm install vuex@4
 ```
+
+### 3.3 element-plus集成
+
+[网站]: https://element-plus.org/zh-CN/guide/quickstart
+
+ElementPlus，一套为开发者、设计师和产品经理准备的基于Vue3.0的**桌面端组件库**；
+如果在Vue2中都使用过element-ui，而element-plus正是element-uit针对于vue3开发的一个UI组件库。
+
+它的使用方式和很多其他的组件库是一样的，所以学会element-plus，其他类似于ant-design-vue、NaiveUI、VantUI都是差不多的。
+
+安装element-plus `npm install element-plus`
+
+##### 3.3.1 全局引入
+
+所有的组件和插件会被自动注册：
+
+main.js:
+
+```javascript
+// ....
+import ElementPlus from 'element-plus'
+import 'element-plus/dist/index.css'
+
+const app = createApp(App)
+app.use(ElementPlus) // 全局引用
+app.mount('#app')
+```
+
+
+
+##### 3.3.2 局部引入
+
+开发中使用到某个组件，就对某个组件单独引入：
+
+App.vue:
+
+```vue
+<template>
+  <div class="app">
+    <!-- ... -->
+    <el-button>ElementPlus</el-button>
+  </div>
+</template>
+
+<script lang="ts">
+import { defineComponent } from 'vue'
+import { ElButton } from 'element-plus'
+
+export default defineComponent({
+  components: {
+    ElButton
+  },
+  name: 'App'
+})
+</script>
+```
+
+如果报错兼容性问题，可以配置：
+
+1. vue.config.js:
+
+   ```javascript
+   module.exports = {
+      // 配置webpack
+     chainWebpack: (config) => {
+       // 让babel-loader处理node_modules中的element-plus文件
+       config.module
+         .rule('js')
+         .include.add(/node_modules\/element-plus/)
+         .end()
+         .use('babel-loader')
+         .loader('babel-loader')
+         .tap((options) => {
+           return options
+         })
+     },
+   }
+   ```
+
+2. babel.config.js：
+
+   ```javascript
+   module.exports = {
+     presets: [
+       [
+         '@vue/cli-plugin-babel/preset',
+         // 新增：
+         {
+           targets: {
+             browsers: ['> 1%', 'last 2 versions', 'not dead']
+           },
+           useBuiltIns: 'usage',
+           corejs: 3
+         }
+       ]
+     ],
+     plugins: [
+       '@babel/plugin-transform-optional-chaining',
+       '@babel/plugin-transform-nullish-coalescing-operator',
+       '@babel/plugin-transform-logical-assignment-operators'
+     ]
+   }
+   
+   ```
+
+##### 3.3.3 自动引入
+
+可以自动引入样式
+
+安装`npm install babel-plugin-import -D`
+
+配置babel:
+
+```javascript
+module.exports = {
+  presets: [
+    //...
+  ],
+  plugins: [
+    //...
+    [
+      'import',
+      {
+        libraryName: 'element-plus',
+        customStyleName: (name) => {
+          return `element-plus/theme-chalk/src/${name}.css`
+        }
+      }
+    ]
+  ]
+}
+
+```
+
+但是，Element Plus 2.0.0 的组件结构和样式路径与 babel-plugin-import 的默认配置不匹配。Element Plus 2.0.0 已经内置了按需导入的支持，不需要使用 babel-plugin-import 插件。
+
+不需要修改 babel.config.js 文件，可移除 babel-plugin-import 的配置。

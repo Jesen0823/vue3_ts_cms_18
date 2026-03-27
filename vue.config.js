@@ -22,6 +22,20 @@ module.exports = {
     }
   },
 
+  // 配置webpack
+  chainWebpack: (config) => {
+    // 让babel-loader处理node_modules中的element-plus文件
+    config.module
+      .rule('js')
+      .include.add(/node_modules\/element-plus/)
+      .end()
+      .use('babel-loader')
+      .loader('babel-loader')
+      .tap((options) => {
+        return options
+      })
+  },
+
   // ========== 可选：适配Vue CLI 4.5.13的基础配置（避免冲突） ==========
   // 开发服务器配置，避开全局5.0.8版本的8080端口
   devServer: {
