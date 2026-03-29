@@ -447,3 +447,74 @@ module.exports = {
 但是，Element Plus 2.0.0 的组件结构和样式路径与 babel-plugin-import 的默认配置不匹配。Element Plus 2.0.0 已经内置了按需导入的支持，不需要使用 babel-plugin-import 插件。
 
 不需要修改 babel.config.js 文件，可移除 babel-plugin-import 的配置。
+
+
+
+### 3.4 axios集成
+
+> 功能特点：
+> 口在浏览器中发送XMLHttpRequests请求
+>
+> 口在node.js中发送http请求
+> 口支持PromiseAPI 
+>
+> 口拦截请求和响应
+> 口转换请求和响应数据
+
+`npm install axios`
+
+
+### 四. 区分不同环境
+
+在开发中，有时候我们需要根据不同的环境设置不同的环境变量,常见的有三种环境：
+
+- 开发环境：development；
+
+- 生产环境：production；
+
+- 测试环境：test；
+
+  
+
+  如区分环境变量呢？常见有三种方式：
+
+  1. 方式一：手动修改不同的变量；
+
+  2. 方式二：根据process.env.NODEENV的值进行区分(**常用**)：
+
+     使用插件`DefinePlugin`注入这个变量的值。
+
+     创建config.ts，编写区分环境：
+
+     ```typescript
+     let BASE_URL = ''
+     let BASE_NAME = ''
+     
+     if (process.env.NODE_ENV === 'development') {
+       BASE_URL = 'http://jesen.org/dev'
+       BASE_NAME = 'bate'
+     } else if (process.env.NODE_ENV === 'production') {
+       BASE_URL = 'http://jesen.org/dprodct'
+       BASE_NAME = 'dev'
+     } else {
+       BASE_URL = 'http://jesen.org/test'
+       BASE_NAME = 'test'
+     }
+     
+     export { BASE_URL, BASE_NAME }
+     ```
+
+     
+
+  3. 方式三：编写不同的环境变量配置文件(**常用**)；
+     项目根目录创建`.env.production`文件，`.env.development`文件，`.env.test`文件;各自定义变量的值：
+
+     ```tex
+     VUE_APP_xxx = xxxxx
+     BASE_URL = 'xxxx'
+     ```
+
+     VUE_APP_开头的是自定义变量，固定前缀，使用`process.env.VUE_APP_xxx`访问。
+
+     在vue.config.js中添加配置项`publicPath: './'`,会将资源文件改为相对路径。
+
