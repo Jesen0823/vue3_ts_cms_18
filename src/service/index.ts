@@ -7,6 +7,10 @@ const cmRequest = new CMRequest({
   interceptors: {
     requestIntercetor: (config) => {
       console.log('requestIntercetor')
+      const token = ''
+      if (token && config.headers) {
+        config.headers.Authorization = `Bearer ${token}`
+      }
       return config
     },
     requestInterceptorCatch: (error) => {
