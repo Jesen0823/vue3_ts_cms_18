@@ -89,3 +89,8 @@ module.exports = {
 
 ```
 
+### 四. 其他配置
+
+#### 1. 安装nomorlize-css
+
+`npm install normalize.css` 

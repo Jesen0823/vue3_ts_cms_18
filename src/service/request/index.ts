@@ -72,7 +72,7 @@ class CMRequest {
     })
   }
 
-  request2<T>(config: CMRequestConfig): Promise<T> {
+  request2<T>(config: CMRequestConfig<T>): Promise<T> {
     return new Promise((resolve, reject) => {
       if (config.interceptors?.requestIntercetor) {
         config = config.interceptors.requestIntercetor(config)
@@ -101,19 +101,19 @@ class CMRequest {
     })
   }
 
-  get<T>(config: CMRequestConfig): Promise<T> {
+  get<T>(config: CMRequestConfig<T>): Promise<T> {
     return this.request2<T>({ ...config, method: 'GET' })
   }
 
-  post<T>(config: CMRequestConfig): Promise<T> {
+  post<T>(config: CMRequestConfig<T>): Promise<T> {
     return this.request2<T>({ ...config, method: 'POST' })
   }
 
-  delete<T>(config: CMRequestConfig): Promise<T> {
+  delete<T>(config: CMRequestConfig<T>): Promise<T> {
     return this.request2<T>({ ...config, method: 'DELETE' })
   }
 
-  patch<T>(config: CMRequestConfig): Promise<T> {
+  patch<T>(config: CMRequestConfig<T>): Promise<T> {
     return this.request2<T>({ ...config, method: 'PATCH' })
   }
 }

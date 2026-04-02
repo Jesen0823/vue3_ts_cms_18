@@ -1,13 +1,13 @@
-import type { AxiosRequestConfig } from 'axios'
+import type { AxiosRequestConfig, AxiosResponse } from 'axios'
 
-export interface CMRequstInterceptors {
+export interface CMRequstInterceptors<T = AxiosResponse> {
   requestIntercetor?: (config: AxiosRequestConfig) => AxiosRequestConfig
   requestInterceptorCatch?: (error: any) => any
-  responseIntercetor?: (res: any) => any
+  responseIntercetor?: (res: T) => T
   responseInterceptorCatch?: (error: any) => any
 }
 
-export interface CMRequestConfig extends AxiosRequestConfig {
-  interceptors?: CMRequstInterceptors
+export interface CMRequestConfig<T = AxiosResponse> extends AxiosRequestConfig {
+  interceptors?: CMRequstInterceptors<T>
   showLoading?: boolean
 }
