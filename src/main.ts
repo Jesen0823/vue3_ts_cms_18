@@ -4,7 +4,6 @@ import router from './router'
 import store from './store'
 import './service/axios_demo'
 import { registerApp } from './global'
-import cmRequest from './service'
 import './assets/css/index.css'
 import 'normalize.css'
 
