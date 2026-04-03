@@ -21,3 +21,19 @@ cmRequest.request2({
     }
   }
 })
+
+interface DataType {
+  data: any
+  returnCode: string
+  success: boolean
+}
+
+cmRequest
+  .request2<DataType>({
+    url: '/home/multidata',
+    method: 'GET'
+  })
+  .then((res) => {
+    console.log('main res: ', res.data)
+    console.log('main res: ', res.success)
+  })
