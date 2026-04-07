@@ -39,9 +39,19 @@ module.exports = {
   // ========== 可选：适配Vue CLI 4.5.13的基础配置（避免冲突） ==========
   // 开发服务器配置，避开全局5.0.8版本的8080端口
   devServer: {
-    port: 8082, // 自定义端口，防止和其他Vue项目冲突
-    open: true // 启动项目后自动打开浏览器
+    // port: 8082, // 自定义端口，防止和其他Vue项目冲突
+    open: true, // 启动项目后自动打开浏览器
     // host: '0.0.0.0' // 允许局域网访问
+    proxy: {
+      '^/api': {
+        // target: 'http://152.136.185.210:5000',
+        target: 'http://127.0.0.1:9000',
+        pathRewrite: {
+          '^/api': ''
+        },
+        changeOrigin: true
+      }
+    }
   },
 
   // 生产环境是否生成sourceMap（关闭可减小打包体积）
@@ -49,6 +59,6 @@ module.exports = {
   // 打包输出目录（默认dist，可自定义）
   outputDir: 'dist',
   // 静态资源存放目录（默认static）
-  assetsDir: 'static',
-  publicPath: './'
+  assetsDir: 'static'
+  // publicPath: './'
 }

@@ -1,9 +1,11 @@
 import cmRequest from './index'
 
+/*
 cmRequest.request({
   url: '/home/multidata',
   method: 'GET'
 })
+*/
 
 cmRequest.request2({
   url: '/home/multidata',

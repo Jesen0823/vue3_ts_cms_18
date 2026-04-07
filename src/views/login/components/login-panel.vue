@@ -1,8 +1,8 @@
 <template>
   <div class="login-panel">
     <h1 class="title">后台管理系统</h1>
-    <el-tabs type="border-card" stretch>
-      <el-tab-pane>
+    <el-tabs type="border-card" stretch v-model="currentTab">
+      <el-tab-pane name="account">
         <template #label>
           <span class="custom-tabs-label">
             <el-icon><UserFilled /></el-icon>
@@ -11,14 +11,14 @@
         </template>
         <login-account ref="accountRef" />
       </el-tab-pane>
-      <el-tab-pane>
+      <el-tab-pane name="phone">
         <template #label>
           <span>
             <el-icon><Iphone /></el-icon>
             <i class="el-icon-user-solid">手机登录</i>
           </span>
         </template>
-        <login-phone />
+        <login-phone ref="phoneRef" />
       </el-tab-pane>
     </el-tabs>
 
@@ -50,19 +50,32 @@ export default defineComponent({
     // 具体来说，当你有一个类或组件的构造函数类型时，InstanceType<T> 可以帮助你获取该类或组件实例的具体类型。
     // const accountRef = ref<InstanceType<typeof LoginAccount> | null>(null)
     const accountRef = ref<any>(null)
-    console.log('accountRef', accountRef)
+    const phoneRef = ref<any>(null)
+    // const phoneRef = ref<InstanceType<typeof LoginPhone> | null>(null)
+    const currentTab = ref<string>('account')
 
     const handleLoginClick = () => {
-      if ((accountRef as any).value) {
-        ;(accountRef as any).value.loginAction(keepPwd)
+      if ((currentTab as any).value === 'account') {
+        if ((accountRef as any).value) {
+          ;(accountRef as any).value.loginAction(keepPwd)
+        }
+      } else {
+        // 手机登录
+        if ((phoneRef as any).value) {
+          ;(phoneRef as any).value.loginAction()
+        }
       }
     }
+
     return {
       UserFilled,
       Iphone,
       keepPwd,
-      handleLoginClick,
-      accountRef
+      accountRef,
+      currentTab,
+      phoneRef,
+
+      handleLoginClick
     }
   },
   components: {

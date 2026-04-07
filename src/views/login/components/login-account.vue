@@ -25,6 +25,7 @@ import { defineComponent, reactive, ref } from 'vue'
 import { accountRules } from '../config/account-config'
 // import { ElForm } from 'element-plus'
 import { localCache } from './../../../utils/cache'
+import { useStore } from 'vuex'
 
 export default defineComponent({
   setup() {
@@ -32,6 +33,8 @@ export default defineComponent({
       name: localCache.getCache('name') ?? '',
       password: localCache.getCache('password') ?? ''
     })
+
+    const store = useStore()
 
     // const formRef = ref<InstanceType<typeof ElForm> | null>(null)
     const formRef = ref<any>(null)
@@ -50,6 +53,7 @@ export default defineComponent({
               localCache.deleteCache('password')
             }
             // 执行登录
+            store.dispatch('loginMoudle/accountLoginAction', { ...account })
           }
         })
       }

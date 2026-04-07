@@ -1,3 +1,4 @@
+import { localCache } from '@/utils/cache'
 import { TIME_OUT, BASE_URL } from './config'
 import CMRequest from './request'
 
@@ -6,24 +7,25 @@ const cmRequest = new CMRequest({
   timeout: TIME_OUT,
   interceptors: {
     requestIntercetor: (config) => {
-      console.log('requestIntercetor')
-      const token = ''
-      if (token && config.headers) {
+      // console.log('requestIntercetor')
+      const token = localCache.getCache('token')
+      console.log('cmRequest token', token)
+      if (token) {
         config.headers.Authorization = `Bearer ${token}`
       }
       return config
     },
     requestInterceptorCatch: (error) => {
-      console.log('requestInterceptorCatch')
-      return error
-    },
-    responseInterceptorCatch: (error) => {
-      console.log('responseInterceptorCatch')
+      // console.log('requestInterceptorCatch')
       return error
     },
     responseIntercetor: (res) => {
-      console.log('responseIntercetor')
+      // console.log('responseIntercetor')
       return res
+    },
+    responseInterceptorCatch: (error) => {
+      // console.log('responseInterceptorCatch')
+      return error
     }
   }
 })

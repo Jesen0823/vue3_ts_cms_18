@@ -1,7 +1,13 @@
-import type { AxiosRequestConfig, AxiosResponse } from 'axios'
+import type {
+  AxiosRequestConfig,
+  AxiosResponse,
+  InternalAxiosRequestConfig
+} from 'axios'
 
 export interface CMRequstInterceptors<T = AxiosResponse> {
-  requestIntercetor?: (config: AxiosRequestConfig) => AxiosRequestConfig
+  requestIntercetor?: (
+    config: InternalAxiosRequestConfig
+  ) => InternalAxiosRequestConfig
   requestInterceptorCatch?: (error: any) => any
   responseIntercetor?: (res: T) => T
   responseInterceptorCatch?: (error: any) => any
