@@ -19,7 +19,7 @@
           <!-- 二级菜单的可以展开的标题 -->
           <el-sub-menu :index="item.id + ''">
             <template #title>
-              <i v-if="item.icon" :class="item.icon"></i>
+              <el-icon v-if="item.icon"><component :is="item.icon" /></el-icon>
               <span>{{ item.name }}</span>
             </template>
             <!-- 遍历里面的item -->
@@ -28,7 +28,11 @@
                 :index="subitem.id + ''"
                 @click="handleMenuItemClick(subitem)"
               >
-                <i v-if="subitem.icon" :class="subitem.icon"></i>
+                <el-icon v-if="subitem.icon"
+                  ><component :is="subitem.icon"
+                /></el-icon>
+                <!--下面这种不生效，需要特定的css支持-->
+                <!--<i v-if="subitem.icon" :class="subitem.icon"></i>-->
                 <span>{{ subitem.name }}</span>
               </el-menu-item>
             </template>
@@ -37,6 +41,7 @@
         <!-- 一级菜单 -->
         <template v-else-if="item.type === 2">
           <el-menu-item :index="item.id + ''">
+            <el-icon v-if="item.icon"><component :is="item.icon" /></el-icon>
             <i v-if="item.icon" :class="item.icon"></i>
             <span>{{ item.name }}</span>
           </el-menu-item>
