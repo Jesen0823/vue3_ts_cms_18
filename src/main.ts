@@ -2,10 +2,10 @@ import { createApp, App } from 'vue'
 import rootApp from './App.vue'
 import router from './router'
 import store, { setupStore } from './store'
-import './service/axios_demo'
-import { registerApp } from './global'
+// import './service/axios_demo'
 import './assets/css/index.css'
 import 'normalize.css'
+import { registerApp } from './global'
 
 const app: App = createApp(rootApp)
 

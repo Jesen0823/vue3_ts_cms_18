@@ -9,7 +9,11 @@ import {
   ElForm,
   ElFormItem,
   ElInput,
-  ElLink
+  ElLink,
+  ElContainer,
+  ElAside,
+  ElHeader,
+  ElMain
 } from 'element-plus'
 import 'element-plus/dist/index.css' // 全局引入样式
 import { App } from 'vue'
@@ -24,7 +28,11 @@ const elComponents = [
   ElIcon,
   ElForm,
   ElFormItem,
-  ElInput
+  ElInput,
+  ElContainer,
+  ElAside,
+  ElHeader,
+  ElMain
 ]
 
 export default function (app: App): void {
