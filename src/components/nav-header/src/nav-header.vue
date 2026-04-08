@@ -15,13 +15,21 @@
     <el-icon class="fold-menu" @click="handleFoldChange">
       <component :is="isFold ? 'Fold' : 'Expand'" />
     </el-icon>
+    <div class="content">
+      <div>面剥削</div>
+      <user-info></user-info>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
+import UserInfo from './user-info.vue'
 
 export default defineComponent({
+  components: {
+    UserInfo
+  },
   emits: ['foldChange'],
   setup(props, { emit }) {
     const isFold = ref(false) as any

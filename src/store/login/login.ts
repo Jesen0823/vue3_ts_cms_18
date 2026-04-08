@@ -9,6 +9,7 @@ import {
 import { IAcount } from '@/service/login/types'
 import { localCache } from '@/utils/cache'
 import router from '@/router'
+import { mapMenusToRoutes } from '@/utils/map-menus'
 
 // Module的泛型参数，第一个是模块的State,第二个是全局State
 const loginMoudle: Module<ILoginState, IRootState> = {
@@ -29,6 +30,13 @@ const loginMoudle: Module<ILoginState, IRootState> = {
     },
     changeUserMenus(state, userMenus: any) {
       state.userMenus = userMenus
+
+      // 处理main的动态子路由
+      const routes = mapMenusToRoutes(userMenus)
+      console.log('routes:', routes)
+      routes.forEach((route) => {
+        router.addRoute('main', route)
+      })
     }
   },
   getters: {},

@@ -17,7 +17,11 @@ import {
   ElMenu,
   ElMenuItemGroup,
   ElSubMenu,
-  ElMenuItem
+  ElMenuItem,
+  ElDropdown,
+  ElDropdownMenu,
+  ElDropdownItem,
+  ElAvatar
 } from 'element-plus'
 import 'element-plus/dist/index.css' // 全局引入样式
 import { App } from 'vue'
@@ -40,7 +44,11 @@ const elComponents = [
   ElMenu,
   ElMenuItemGroup,
   ElSubMenu,
-  ElMenuItem
+  ElMenuItem,
+  ElDropdown,
+  ElDropdownMenu,
+  ElDropdownItem,
+  ElAvatar
 ]
 
 export default function (app: App): void {

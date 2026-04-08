@@ -52,9 +52,9 @@
 </template>
 
 <script lang="ts">
-import router from '@/router'
 import { useStore } from '@/store'
 import { computed, defineComponent, onMounted, ref } from 'vue'
+import { useRouter } from 'vue-router'
 
 export default defineComponent({
   props: {
@@ -65,6 +65,7 @@ export default defineComponent({
   },
   setup() {
     const store = useStore()
+    const router = useRouter()
     const userMenus = computed(() => store.state.loginMoudle.userMenus)
     const defaultValue = ref('1')
 
@@ -74,7 +75,7 @@ export default defineComponent({
 
     // event handle
     const handleMenuItemClick = (item: any) => {
-      console.log('--------')
+      console.log('handleMenuItemClick', item)
       router.push({
         path: item.url ?? '/not-found'
       })
