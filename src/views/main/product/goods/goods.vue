@@ -15,4 +15,9 @@ export default defineComponent({
 })
 </script>
 
-<style scoped></style>
+<style scoped>
+.goods {
+  height: 100%;
+  background-color: aquamarine;
+}
+</style>

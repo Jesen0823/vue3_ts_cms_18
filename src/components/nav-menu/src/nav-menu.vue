@@ -65,7 +65,7 @@ export default defineComponent({
   },
   setup() {
     const store = useStore()
-    const router = useRouter()
+    const uRouter = useRouter()
     const userMenus = computed(() => store.state.loginMoudle.userMenus)
     const defaultValue = ref('1')
 
@@ -75,8 +75,8 @@ export default defineComponent({
 
     // event handle
     const handleMenuItemClick = (item: any) => {
-      console.log('handleMenuItemClick', item)
-      router.push({
+      console.log('handleMenuItemClick', item.url)
+      uRouter.push({
         path: item.url ?? '/not-found'
       })
     }

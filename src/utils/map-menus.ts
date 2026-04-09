@@ -12,6 +12,12 @@ export function mapMenusToRoutes(userMenus: any[]): RouteRecordRaw[] {
     console.log('mapMenusToRoutes', 'key:', key)
     const route = require('../router/main' + key.split('.')[1])
     console.log('mapMenusToRoutes', 'route:', route)
+    console.log('mapMenusToRoutes', 'split:', key.split('.'))
+    console.log(
+      'mapMenusToRoutes',
+      'getpath:',
+      '../router/main' + key.split('.')[1]
+    )
     allRoutes.push(route.default)
   })
 

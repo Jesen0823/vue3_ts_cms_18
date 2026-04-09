@@ -1,4 +1,6 @@
+import store from '@/store'
 import { localCache } from '@/utils/cache'
+import { mapMenusToRoutes } from '@/utils/map-menus'
 import { createRouter, createWebHashHistory } from 'vue-router'
 import type { RouteRecordRaw } from 'vue-router'
 
@@ -36,8 +38,12 @@ router.beforeEach((to) => {
     if (!token) {
       return '/login'
     }
+    const userMenus = (store.state as any).loginMoudle.userMenus
+    const routes = mapMenusToRoutes(userMenus)
+    routes.forEach((route) => {
+      router.addRoute(route)
+    })
   }
-  // 此处也可处理main的动态子路由
 })
 
 export default router

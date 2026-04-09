@@ -51,7 +51,8 @@ module.exports = {
         },
         changeOrigin: true
       }
-    }
+    },
+    historyApiFallback: true
   },
 
   // 生产环境是否生成sourceMap（关闭可减小打包体积）
