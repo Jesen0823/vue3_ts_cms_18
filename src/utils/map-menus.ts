@@ -10,14 +10,8 @@ export function mapMenusToRoutes(userMenus: any[]): RouteRecordRaw[] {
   const routeFiles = require.context('../router/main', true, /\.ts/)
   routeFiles.keys().forEach((key) => {
     console.log('mapMenusToRoutes', 'key:', key)
-    const route = require('../router/main' + key.split('.')[1])
+    const route = routeFiles(key)
     console.log('mapMenusToRoutes', 'route:', route)
-    console.log('mapMenusToRoutes', 'split:', key.split('.'))
-    console.log(
-      'mapMenusToRoutes',
-      'getpath:',
-      '../router/main' + key.split('.')[1]
-    )
     allRoutes.push(route.default)
   })
 
@@ -39,6 +33,23 @@ export function mapMenusToRoutes(userMenus: any[]): RouteRecordRaw[] {
   _recurseGetRoute(userMenus)
 
   return routes
+}
+
+export function pathMapToMenu(userMenus: any[], currentPath: string): any {
+  for (const menu of userMenus) {
+    if (menu.type === 1) {
+      const findMenu = pathMapToMenu(menu.children ?? [], currentPath)
+      if (findMenu) {
+        return findMenu
+      }
+    } else if (menu.type === 2 && menu.url === currentPath) {
+      return menu
+    }
+  }
+}
+
+export function clearFirstMenu() {
+  firstMenu = null
 }
 
 export { firstMenu }

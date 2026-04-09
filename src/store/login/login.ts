@@ -9,7 +9,7 @@ import {
 import { IAcount } from '@/service/login/types'
 import { localCache } from '@/utils/cache'
 import router from '@/router'
-import { mapMenusToRoutes } from '@/utils/map-menus'
+import { clearFirstMenu, mapMenusToRoutes } from '@/utils/map-menus'
 
 // Module的泛型参数，第一个是模块的State,第二个是全局State
 const loginMoudle: Module<ILoginState, IRootState> = {
@@ -24,6 +24,7 @@ const loginMoudle: Module<ILoginState, IRootState> = {
   mutations: {
     changeToken(state, token: string) {
       state.token = token
+      clearFirstMenu()
     },
     changeUserInfo(state, userInfo: any) {
       state.userInfo = userInfo

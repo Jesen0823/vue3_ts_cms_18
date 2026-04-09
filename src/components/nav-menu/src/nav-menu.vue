@@ -53,8 +53,9 @@
 
 <script lang="ts">
 import { useStore } from '@/store'
+import { pathMapToMenu } from '@/utils/map-menus'
 import { computed, defineComponent, onMounted, ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 
 export default defineComponent({
   props: {
@@ -67,7 +68,10 @@ export default defineComponent({
     const store = useStore()
     const uRouter = useRouter()
     const userMenus = computed(() => store.state.loginMoudle.userMenus)
-    const defaultValue = ref('1')
+    const curRoute = useRoute()
+    const curPath = curRoute.path
+    const menu = pathMapToMenu(userMenus.value, curPath)
+    const defaultValue = ref(menu?.id + '')
 
     onMounted(() => {
       console.log('userMenus', userMenus.value)
