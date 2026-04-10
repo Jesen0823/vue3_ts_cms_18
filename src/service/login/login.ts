@@ -1,5 +1,6 @@
 import cmRequest from '..'
-import { IAcount, IDataType, ILoginResult } from './types'
+import { IDataType } from '../types'
+import { IAcount, ILoginResult } from './types'
 
 enum LoginAPI {
   AccountLogin = '/login',
