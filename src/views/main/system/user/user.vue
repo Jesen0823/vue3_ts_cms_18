@@ -1,29 +1,23 @@
 <template>
   <div class="user">
-    <div class="search">
-      <c-m-form v-bind="formConfig" v-model="formData"></c-m-form>
-    </div>
-    <div class="content">TEST: {{ formData.name }}</div>
+    <page-search :searchFormConfig="formConfig" />
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
-import CMForm from '@/base-ui/form'
+import { defineComponent } from 'vue'
 import { formConfig } from './config/user.config'
+import PageSearch from '@/components/page-search'
+
 export default defineComponent({
   name: 'user',
   components: {
-    CMForm
+    PageSearch
   },
   setup() {
-    const formData = ref({
-      id: '',
-      name: '',
-      password: '',
-      sport: ''
-    })
-    return { formConfig, formData }
+    return {
+      formConfig
+    }
   }
 })
 </script>

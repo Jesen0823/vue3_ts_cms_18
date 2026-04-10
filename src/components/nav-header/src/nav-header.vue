@@ -46,7 +46,7 @@ export default defineComponent({
     const store = useStore()
     const breadcrumbs = computed(() => {
       const userMenus = store.state.loginMoudle.userMenus
-      console.log('userMenus:', userMenus)
+      console.log('header userMenus:', userMenus)
       const route = useRoute()
       console.log('route is what:', route)
       const curPath = route.path

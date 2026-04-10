@@ -59,7 +59,7 @@ export default defineComponent({
   height: calc(100% - 48px);
 
   .page-info {
-    background-color: #4783de;
+    background-color: #ffe;
     border-radius: 5px;
   }
 }
@@ -93,7 +93,7 @@ export default defineComponent({
 }
 
 .el-main {
-  color: #d94747;
+  color: #333;
   text-align: center;
   background-color: #f0f2f5;
 }

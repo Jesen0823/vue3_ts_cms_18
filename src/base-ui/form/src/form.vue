@@ -1,5 +1,8 @@
 <template>
   <div class="cm-form">
+    <div class="header">
+      <slot name="form-header"></slot>
+    </div>
     <el-form label-width="labelWidth">
       <el-row>
         <template v-for="item in formItems" :key="item.label">
@@ -47,6 +50,9 @@
         </template>
       </el-row>
     </el-form>
+    <div class="footer">
+      <slot name="form-footer"></slot>
+    </div>
   </div>
 </template>
 
@@ -100,10 +106,9 @@ export default defineComponent({
 })
 </script>
 
-<style scoped>
+<style scoped lang="less">
 .cm-form {
   padding-top: 22px;
-
   .form-item {
     padding: 5px 8px;
   }
