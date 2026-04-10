@@ -51,12 +51,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue'
+import { defineComponent, PropType, ref, watch } from 'vue'
 import { IFormItem } from '../types'
 
 export default defineComponent({
   props: {
-    formData: {
+    modelValue: {
       type: Object,
       required: true
     },
@@ -84,8 +84,18 @@ export default defineComponent({
       })
     }
   },
-  setup() {
-    return {}
+  emits: ['update:modelValue'],
+  setup(props, { emit }) {
+    // 这样引用的是同一个对象，子组件Form会修改父组件引用的值
+    // 不符合数据单向流动
+    // const formData = ref(props.modelValue)
+    // 这样数据props.modelValue解构后，重新创建ref对象，不影响父组件
+    const formData = ref({ ...props.modelValue })
+    // 监听数据改变，发送给父组件，深度监听
+    watch(formData, (newVal) => emit('update:modelValue', newVal), {
+      deep: true
+    })
+    return { formData }
   }
 })
 </script>
