@@ -1,14 +1,14 @@
 <template>
   <div class="user">
     <div class="search">
-      <c-m-form v-bind="formConfig"></c-m-form>
+      <c-m-form v-bind="formConfig" :form-data="formData"></c-m-form>
     </div>
     <div class="content"></div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, reactive } from 'vue'
 import CMForm from '@/base-ui/form'
 import { formConfig } from './config/user.config'
 export default defineComponent({
@@ -17,7 +17,13 @@ export default defineComponent({
     CMForm
   },
   setup() {
-    return { formConfig }
+    const formData = reactive({
+      id: '',
+      name: '',
+      password: '',
+      sport: ''
+    })
+    return { formConfig, formData }
   }
 })
 </script>

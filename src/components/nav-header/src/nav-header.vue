@@ -16,16 +16,19 @@
       <component :is="isFold ? 'Fold' : 'Expand'" />
     </el-icon>
     <div class="content">
-      <nav-breadcrumb />
+      <nav-breadcrumb :breadcrumbs="breadcrumbs" />
       <user-info></user-info>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { computed, defineComponent, ref } from 'vue'
 import UserInfo from './user-info.vue'
 import NavBreadcrumb from '@/base-ui/breadcrumb'
+import { pathMapBreadcrumbs } from '@/utils/map-menus'
+import { useStore } from '@/store'
+import { useRoute } from 'vue-router'
 
 export default defineComponent({
   components: {
@@ -40,9 +43,20 @@ export default defineComponent({
       emit('foldChange', isFold.value)
     }
 
+    const store = useStore()
+    const breadcrumbs = computed(() => {
+      const userMenus = store.state.loginMoudle.userMenus
+      console.log('userMenus:', userMenus)
+      const route = useRoute()
+      console.log('route is what:', route)
+      const curPath = route.path
+      return pathMapBreadcrumbs(userMenus, curPath)
+    })
+
     return {
       isFold,
-      handleFoldChange
+      handleFoldChange,
+      breadcrumbs
     }
   }
 })
