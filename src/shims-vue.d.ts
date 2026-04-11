@@ -1,9 +1,15 @@
-/* eslint-disable */
 declare module '*.vue' {
   import type { DefineComponent } from 'vue'
+  // eslint-disable-next-line @typescript-eslint/ban-types
   const component: DefineComponent<{}, {}, any>
   export default component
 }
 
-// 消除$store的警告
-declare let $store: any
+declare module '@vue/runtime-core' {
+  interface ComponentCustomProperties {
+    $filters: {
+      foo(): void
+      formatTime(value: string): string
+    }
+  }
+}

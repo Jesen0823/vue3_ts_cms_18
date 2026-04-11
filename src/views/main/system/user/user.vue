@@ -2,13 +2,33 @@
   <div class="user">
     <page-search :searchFormConfig="formConfig" />
     <div class="content">
-      <cm-table :listData="userList" :propList="propList">
+      <cm-table
+        :listData="userList"
+        :propList="propList"
+        :showIndexColumn="showIndexColumn"
+        :showSelectColumn="showSelectColumn"
+      >
         <template #status="scope">
-          <el-button>{{ scope.row.enable ? '启用' : '禁用' }}</el-button>
+          <el-button
+            size="mini"
+            plain
+            :type="scope.row.enable ? 'success' : 'danger'"
+          >
+            {{ scope.row.enable ? '启用' : '禁用' }}
+          </el-button>
         </template>
         <template #createAt="scope">
-          <!-- <strong>测试</strong> -->
-          <strong>{{ scope.row.createAt }}</strong>
+          <span>{{ $filters.formatTime(scope.row.createAt) }}</span>
+        </template>
+        <template #updateAt="scope">
+          <span>{{ $filters.formatTime(scope.row.updateAt) }}</span>
+        </template>
+        <!--不用拿数据，所以不用作用域scope-->
+        <template #handler>
+          <div class="handlee-btns">
+            <el-button size="mini" type="text">编辑</el-button>
+            <el-button size="mini" type="text">删除</el-button>
+          </div>
         </template>
       </cm-table>
     </div>
@@ -19,7 +39,7 @@
 import { computed, defineComponent } from 'vue'
 import { formConfig } from './config/user.config'
 import PageSearch from '@/components/page-search'
-import { useStore } from 'vuex'
+import { useStore } from '@/store'
 import CmTable from '@/base-ui/table'
 
 export default defineComponent({
@@ -58,10 +78,15 @@ export default defineComponent({
       },
       { label: '操作', minWidth: '120', slotName: 'handler' }
     ]
+    const showIndexColumn = true
+    const showSelectColumn = true
+
     return {
       formConfig,
       userList,
-      propList
+      propList,
+      showIndexColumn,
+      showSelectColumn
     }
   }
 })
