@@ -31,33 +31,23 @@ const systemModule: Module<ISystemState, IRootState> = {
   getters: {
     pageListData(state) {
       return (pageName: string) => {
-        switch (pageName) {
-          case 'user':
-            return state.usersList
-          case 'role':
-            return state.roleList
-        }
+        return (state as any)[`${pageName}List`]
       }
     }
   },
   actions: {
     async getPageListAction({ commit }, payload: any) {
       const pageName = payload.pageName
-      let pageUrl = ''
-      switch (pageName) {
-        case 'uses':
-          pageUrl = '/users/list'
-          break
-        case 'role':
-          pageUrl = '/role/list'
-          break
-      }
+      const pageUrl = `/${pageName}/list`
       console.log('getPageListAction', payload.pageName)
+
       const pageResult = await getPageListData(pageUrl, payload.queryInfo)
       console.log('pageResult', pageResult)
+
       const { list, totalCount } = pageResult.data
-      commit(`change${upperFirstLetter(pageName)}List`, list)
-      commit(`change${upperFirstLetter(pageName)}Count`, totalCount)
+      const upperPageName = upperFirstLetter(pageName)
+      commit(`change${upperPageName}List`, list)
+      commit(`change${upperPageName}Count`, totalCount)
     }
   }
 }

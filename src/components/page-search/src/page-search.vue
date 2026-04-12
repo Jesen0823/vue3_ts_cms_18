@@ -6,7 +6,9 @@
       </template>
       <template #form-footer>
         <div class="bottom-btns">
-          <el-button type="primary" :icon="Delete">重置</el-button>
+          <el-button type="primary" :icon="Delete" @click="handleResetClick"
+            >重置</el-button
+          >
           <el-button type="primary" :icon="Search">搜索</el-button>
         </div>
       </template>
@@ -16,7 +18,7 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
-import CMForm from '@/base-ui/form'
+import CMForm, { IFormItem } from '@/base-ui/form'
 import { Search, Delete } from '@element-plus/icons-vue'
 
 export default defineComponent({
@@ -29,19 +31,25 @@ export default defineComponent({
   components: {
     CMForm
   },
-  setup() {
-    const formData = ref({
-      id: '',
-      name: '',
-      password: '',
-      sport: '',
-      createTime: ''
-    })
+  setup(props) {
+    const formItems: IFormItem[] = props.searchFormConfig?.formItems ?? []
+    const formOriginData: any = {}
+    for (const item of formItems) {
+      formOriginData[item.field] = ''
+    }
+    const formData = ref(formOriginData)
+
+    const handleResetClick = () => {
+      for (const key in formOriginData) {
+        ;(formData as any).value[`${key}`] = formOriginData[key]
+      }
+    }
     return {
       formData,
       // icon:
       Search,
-      Delete
+      Delete,
+      handleResetClick
     }
   }
 })
