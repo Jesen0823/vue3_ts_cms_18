@@ -19,14 +19,16 @@
                 <el-input
                   :placeholder="item.placeholder"
                   :show-password="item.type === 'password'"
-                  v-model="formData[`${item.field}`]"
+                  :model-value="modelValue[`${item.field}`]"
+                  @update:modelValue="handleValueChange($event, item.field)"
                 />
               </template>
               <template v-else-if="item.type === 'select'">
                 <el-select
                   :placeholder="item.placeholder"
                   v-bind="item.otherOptions"
-                  v-model="formData[`${item.field}`]"
+                  :model-value="modelValue[`${item.field}`]"
+                  @update:modelValue="handleValueChange($event, item.field)"
                 >
                   <el-option
                     v-for="option in item.options"
@@ -38,7 +40,8 @@
               </template>
               <template v-else-if="item.type === 'datepicker'">
                 <el-date-picker
-                  v-model="formData[`${item.field}`]"
+                  :model-value="modelValue[`${item.field}`]"
+                  @update:modelValue="handleValueChange($event, item.field)"
                   style="width: 100%"
                   :type="item.otherOptions.type"
                   :start-placeholder="item.otherOptions.startPlaceholder"
@@ -96,12 +99,19 @@ export default defineComponent({
     // 不符合数据单向流动
     // const formData = ref(props.modelValue)
     // 这样数据props.modelValue解构后，重新创建ref对象，不影响父组件
-    const formData = ref({ ...props.modelValue })
+    // const formData = ref({ ...props.modelValue })
     // 监听数据改变，发送给父组件，深度监听
-    watch(formData, (newVal) => emit('update:modelValue', newVal), {
-      deep: true
-    })
-    return { formData }
+    // watch(formData, (newVal) => emit('update:modelValue', newVal), {
+    //   deep: true
+    // })
+    // return { formData }
+
+    // 另一种实现方式：
+    const handleValueChange = (value: any, field: string) => {
+      emit('update:modelValue', { ...props.modelValue, [field]: value })
+    }
+
+    return { handleValueChange }
   }
 })
 </script>
