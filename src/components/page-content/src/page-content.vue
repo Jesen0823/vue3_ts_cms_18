@@ -1,6 +1,6 @@
 <template>
   <div class="page-content">
-    <cm-table :listData="userList" v-bind="contentTableConfig">
+    <cm-table :listData="dataList" v-bind="contentTableConfig">
       <!-- header的插槽 -->
       <template #header-handler>
         <el-button type="primary" size="mini">新建用户</el-button>
@@ -46,24 +46,32 @@ export default defineComponent({
     contentTableConfig: {
       type: Object as PropType<IContentTableConfig>,
       required: true
+    },
+    pageName: {
+      type: String,
+      required: true
     }
   },
   components: {
     CmTable
   },
-  setup() {
+  setup(props) {
     const store = useStore()
     store.dispatch('systemModule/getPageListAction', {
+      pageName: props.pageName,
       pageUrl: 'users/list',
       queryInfo: {
         offset: 0,
         size: 10
       }
     })
-    const userList = computed(() => store.state.systemModule.userList)
-    const userCount = computed(() => store.state.systemModule.userCount)
+    //const userList = computed(() => store.state.systemModule.userList)
+    //const userCount = computed(() => store.state.systemModule.userCount)
+    const dataList = computed(() =>
+      store.getters[`systemModule/pageListData`](props.pageName)
+    )
 
-    return { userList }
+    return { dataList }
   }
 })
 </script>
