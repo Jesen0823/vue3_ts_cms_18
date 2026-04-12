@@ -7,6 +7,7 @@ declare module '*.vue' {
 }
 
 import 'vue'
+import type { Ref as VueRef } from '@vue/reactivity'
 
 declare module 'vue' {
   interface ComponentCustomProperties {
@@ -15,4 +16,6 @@ declare module 'vue' {
       formatTime(value: string): string
     }
   }
+  
+  export type Ref<T = any> = VueRef<T>
 }

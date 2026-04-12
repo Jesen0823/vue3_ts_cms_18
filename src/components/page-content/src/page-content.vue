@@ -3,12 +3,12 @@
     <cm-table :listData="dataList" v-bind="contentTableConfig">
       <!-- header的插槽 -->
       <template #header-handler>
-        <el-button type="primary" size="mini">新建用户</el-button>
+        <el-button type="primary" size="small">新建用户</el-button>
       </template>
       <!-- 列的插槽: -->
       <template #status="scope">
         <el-button
-          size="mini"
+          size="small"
           plain
           :type="scope.row.enable ? 'success' : 'danger'"
         >
@@ -24,8 +24,8 @@
       <!--不用拿数据，所以不用作用域scope-->
       <template #handler>
         <div class="handlee-btns">
-          <el-button size="mini" type="text">编辑</el-button>
-          <el-button size="mini" type="text">删除</el-button>
+          <el-button size="small" type="text">编辑</el-button>
+          <el-button size="small" type="text">删除</el-button>
         </div>
       </template>
       <template #table-header>
@@ -57,21 +57,29 @@ export default defineComponent({
   },
   setup(props) {
     const store = useStore()
-    store.dispatch('systemModule/getPageListAction', {
-      pageName: props.pageName,
-      pageUrl: 'users/list',
-      queryInfo: {
-        offset: 0,
-        size: 10
-      }
-    })
+    // 发送网络请求:
+    const getPageData = (querryInfo: any = {}) => {
+      store.dispatch('systemModule/getPageListAction', {
+        pageName: props.pageName,
+        pageUrl: 'users/list',
+        queryInfo: {
+          offset: 0,
+          size: 10,
+          ...querryInfo
+        }
+      })
+    }
+
+    getPageData()
+
+    // 从vuex获取数据:
     //const userList = computed(() => store.state.systemModule.userList)
     //const userCount = computed(() => store.state.systemModule.userCount)
     const dataList = computed(() =>
       store.getters[`systemModule/pageListData`](props.pageName)
     )
 
-    return { dataList }
+    return { dataList, getPageData }
   }
 })
 </script>

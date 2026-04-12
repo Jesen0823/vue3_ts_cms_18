@@ -9,7 +9,9 @@
           <el-button type="primary" :icon="Delete" @click="handleResetClick"
             >重置</el-button
           >
-          <el-button type="primary" :icon="Search">搜索</el-button>
+          <el-button type="primary" :icon="Search" @click="handleSearchClick"
+            >搜索</el-button
+          >
         </div>
       </template>
     </c-m-form>
@@ -31,7 +33,8 @@ export default defineComponent({
   components: {
     CMForm
   },
-  setup(props) {
+  emits: ['eventResetBtnClick', 'eventSearchBtnClick'],
+  setup(props, { emit }) {
     const formItems: IFormItem[] = props.searchFormConfig?.formItems ?? []
     const formOriginData: any = {}
     for (const item of formItems) {
@@ -40,14 +43,21 @@ export default defineComponent({
     const formData = ref(formOriginData)
 
     const handleResetClick = () => {
-      ;(formData as any).value = formOriginData
+      Object.assign((formData as any).value, formOriginData)
+      emit('eventResetBtnClick')
     }
+
+    const handleSearchClick = () => {
+      emit('eventSearchBtnClick', { ...(formData as any).value })
+    }
+
     return {
       formData,
       // icon:
       Search,
       Delete,
-      handleResetClick
+      handleResetClick,
+      handleSearchClick
     }
   }
 })
