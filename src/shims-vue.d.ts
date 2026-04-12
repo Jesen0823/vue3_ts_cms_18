@@ -1,3 +1,4 @@
+/* eslint-disable */
 declare module '*.vue' {
   import type { DefineComponent } from 'vue'
   // eslint-disable-next-line @typescript-eslint/ban-types
@@ -5,7 +6,9 @@ declare module '*.vue' {
   export default component
 }
 
-declare module '@vue/runtime-core' {
+import 'vue'
+
+declare module 'vue' {
   interface ComponentCustomProperties {
     $filters: {
       foo(): void

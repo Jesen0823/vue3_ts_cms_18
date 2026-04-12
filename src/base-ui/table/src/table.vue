@@ -1,5 +1,13 @@
 <template>
   <div class="cm-table">
+    <div class="header">
+      <slot name="table-header">
+        <div class="title">{{ title }}</div>
+        <div class="handler">
+          <slot name="header-handler"></slot>
+        </div>
+      </slot>
+    </div>
     <el-table
       :data="listData"
       border
@@ -29,22 +37,36 @@
         </el-table-column>
       </template>
     </el-table>
+    <div class="footer">
+      <slot name="footer">
+        <el-pagination
+          v-model:current-page="currentPage4"
+          v-model:page-size="pageSize4"
+          :page-sizes="[100, 200, 300, 400]"
+          :disabled="disabled"
+          :background="background"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="400"
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+        />
+      </slot>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue'
+import { defineComponent, PropType, ref } from 'vue'
 import { ITableType } from '../types'
-
 export default defineComponent({
   props: {
     listData: {
       type: Array,
       required: true
     },
-    propList: {
-      type: Array as PropType<ITableType[]>,
-      required: true
+    title: {
+      type: String,
+      default: ''
     },
     showIndexColumn: {
       type: Boolean,
@@ -53,16 +75,63 @@ export default defineComponent({
     showSelectColumn: {
       type: Boolean,
       default: true
+    },
+    propList: {
+      type: Array as PropType<ITableType[]>,
+      required: true
     }
   },
   emits: ['selectionChange'],
   setup(props, { emit }) {
+    const currentPage4 = ref(4)
+    const pageSize4 = ref(100)
+    const background = ref(false)
+    const disabled = ref(false)
+    const handleSizeChange = (val: number) => {
+      console.log(`${val} items per page`)
+    }
+    const handleCurrentChange = (val: number) => {
+      console.log(`current page: ${val}`)
+    }
     const handleSelectChange = (value: any) => {
       emit('selectionChange', value)
     }
-    return { handleSelectChange }
+    return {
+      handleSelectChange,
+      currentPage4,
+      pageSize4,
+      background,
+      disabled,
+      handleCurrentChange,
+      handleSizeChange
+    }
   }
 })
 </script>
 
-<style scoped></style>
+<style scoped lang="less">
+.header {
+  display: flex;
+  height: 45px;
+  padding: 0 5px;
+  justify-content: space-between;
+  align-items: center;
+
+  .title {
+    font-size: 20px;
+    font-weight: 700;
+  }
+
+  .handler {
+    align-items: center;
+  }
+}
+
+.footer {
+  margin-top: 15px;
+
+  .el-pagination {
+    text-align: right;
+  }
+}
+</style>
