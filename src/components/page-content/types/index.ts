@@ -6,3 +6,7 @@ export interface IContentTableConfig {
   showSelectColumn: boolean
   propList: ITableType[]
 }
+
+export interface IPageContentInstance {
+  getPageData: (queryInfo?: any) => void
+}

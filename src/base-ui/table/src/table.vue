@@ -13,6 +13,7 @@
       border
       style="width: 100%"
       @selection-change="handleSelectChange"
+      v-bind="childrenProps"
     >
       <el-table-column
         v-if="showSelectColumn"
@@ -27,8 +28,9 @@
         align="center"
         width="80"
       ></el-table-column>
+      <!-- 动态插槽 -->
       <template v-for="propItem in propList" :key="propItem.prop">
-        <el-table-column v-bind="propItem" align="center">
+        <el-table-column v-bind="propItem" align="center" show-overflow-tooltip>
           <template #default="scope">
             <slot :name="propItem.slotName" :row="scope.row">
               {{ scope.row[propItem.prop] }}
@@ -37,16 +39,19 @@
         </el-table-column>
       </template>
     </el-table>
-    <div class="footer">
+    <div class="footer" v-if="showFooter">
       <slot name="footer">
+        <!-- 如果直接双向绑定，可用： -->
+        <!-- v-model:current-page="page.currentPage" -->
+        <!-- v-model:page-size="page.pageSize" -->
         <el-pagination
-          v-model:current-page="currentPage4"
-          v-model:page-size="pageSize4"
-          :page-sizes="[100, 200, 300, 400]"
+          current-page="page.currentPage"
+          page-size="page.pageSize"
+          :page-sizes="[5, 10, 20, 30]"
           :disabled="disabled"
           :background="background"
           layout="total, sizes, prev, pager, next, jumper"
-          :total="400"
+          :total="dataCount"
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
         />
@@ -60,13 +65,17 @@ import { defineComponent, PropType, ref } from 'vue'
 import { ITableType } from '../types'
 export default defineComponent({
   props: {
-    listData: {
-      type: Array,
-      required: true
-    },
     title: {
       type: String,
       default: ''
+    },
+    dataCount: {
+      type: Number,
+      default: 0
+    },
+    listData: {
+      type: Array,
+      required: true
     },
     showIndexColumn: {
       type: Boolean,
@@ -79,23 +88,37 @@ export default defineComponent({
     propList: {
       type: Array as PropType<ITableType[]>,
       required: true
+    },
+    page: {
+      type: Object,
+      default: () => ({ currentPage: 0, pageSize: 10 })
+    },
+    childrenProps: {
+      type: Object,
+      default: () => ({})
+    },
+    showFooter: {
+      type: Boolean,
+      default: true
     }
   },
-  emits: ['selectionChange'],
+  emits: ['selectionChange', 'update:page'],
   setup(props, { emit }) {
     const currentPage4 = ref(4)
     const pageSize4 = ref(100)
     const background = ref(false)
     const disabled = ref(false)
-    const handleSizeChange = (val: number) => {
-      console.log(`${val} items per page`)
+
+    const handleSizeChange = (pageSize: number) => {
+      emit('update:page', { ...props.page, pageSize })
     }
-    const handleCurrentChange = (val: number) => {
-      console.log(`current page: ${val}`)
+    const handleCurrentChange = (currentPage: number) => {
+      emit('update:page', { ...props.page, currentPage })
     }
     const handleSelectChange = (value: any) => {
       emit('selectionChange', value)
     }
+
     return {
       handleSelectChange,
       currentPage4,
