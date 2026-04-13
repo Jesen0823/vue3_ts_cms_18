@@ -10,5 +10,6 @@ export function usePageSearch() {
     ;(refPageContent as any).value?.getPageData?.(queryInfo)
   }
 
+  // 也可以返回一个对象
   return [refPageContent, handleResetClick, handleSearchClick]
 }

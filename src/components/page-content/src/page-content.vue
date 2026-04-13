@@ -1,6 +1,12 @@
 <template>
   <div class="page-content">
-    <cm-table :listData="dataList" v-bind="contentTableConfig">
+    <!-- v-model:page 而不直接v-model，是为了防止直接绑定给modelValue属性 -->
+    <cm-table
+      :listData="dataList"
+      :dataCount="dataCount"
+      v-bind="contentTableConfig"
+      v-model:page="pageInfo"
+    >
       <!-- header的插槽 -->
       <template #header-handler>
         <el-button type="primary" size="small">新建用户</el-button>
@@ -36,7 +42,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, PropType } from 'vue'
+import { computed, defineComponent, PropType, ref, watch } from 'vue'
 import { useStore } from '@/store'
 import CmTable from '@/base-ui/table'
 import { IContentTableConfig } from '../types'
@@ -57,14 +63,23 @@ export default defineComponent({
   },
   setup(props) {
     const store = useStore()
+
+    // 双向绑定pageInfo
+    const pageInfo = ref({ currentPage: 0, pageSize: 10 })
+    watch(pageInfo, () => {
+      getPageData()
+    })
+
     // 发送网络请求:
     const getPageData = (querryInfo: any = {}) => {
       store.dispatch('systemModule/getPageListAction', {
         pageName: props.pageName,
         pageUrl: 'users/list',
         queryInfo: {
-          offset: 0,
-          size: 10,
+          offset:
+            (pageInfo as any).value.currentPage *
+            (pageInfo as any).value.pageSize,
+          size: (pageInfo as any).value.pageSize,
           ...querryInfo
         }
       })
@@ -79,7 +94,11 @@ export default defineComponent({
       store.getters[`systemModule/pageListData`](props.pageName)
     )
 
-    return { dataList, getPageData }
+    const dataCount = computed(() =>
+      store.getters[`systemModule/pageListCount`](props.pageName)
+    )
+
+    return { dataList, getPageData, dataCount, pageInfo }
   }
 })
 </script>
