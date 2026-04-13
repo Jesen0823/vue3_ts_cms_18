@@ -30,7 +30,8 @@ import {
   ElDatePicker,
   ElBreadcrumb,
   ElBreadcrumbItem,
-  ElPagination
+  ElPagination,
+  ElImage
 } from 'element-plus'
 import 'element-plus/dist/index.css' // 全局引入样式
 import { App } from 'vue'
@@ -66,7 +67,8 @@ const elComponents = [
   ElDatePicker,
   ElBreadcrumb,
   ElBreadcrumbItem,
-  ElPagination
+  ElPagination,
+  ElImage
 ]
 
 export default function (app: App): void {

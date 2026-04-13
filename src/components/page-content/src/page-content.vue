@@ -34,8 +34,16 @@
           <el-button size="small" type="text">删除</el-button>
         </div>
       </template>
-      <template #table-header>
-        <div></div>
+
+      <!-- 动态插槽的动态插入: -->
+      <template
+        v-for="item in otherPropSlots"
+        :key="item.prop"
+        #[item.slotName]="scope"
+      >
+        <template v-if="item.slotName">
+          <slot :name="item.slotName" :row="scope.row"></slot>>
+        </template>
       </template>
     </cm-table>
   </div>
@@ -93,12 +101,22 @@ export default defineComponent({
     const dataList = computed(() =>
       store.getters[`systemModule/pageListData`](props.pageName)
     )
-
     const dataCount = computed(() =>
       store.getters[`systemModule/pageListCount`](props.pageName)
     )
 
-    return { dataList, getPageData, dataCount, pageInfo }
+    // 获取其他动态插槽
+    const otherPropSlots = props.contentTableConfig?.propList.filter(
+      (item: any) => {
+        if (item.slotName === 'status') return false
+        if (item.slotName === 'createAt') return false
+        if (item.slotName === 'updateAt') return false
+        if (item.slotName === 'handler') return false
+        return true
+      }
+    )
+
+    return { dataList, getPageData, dataCount, pageInfo, otherPropSlots }
   }
 })
 </script>
