@@ -9,7 +9,11 @@ import {
 import { IAcount } from '@/service/login/types'
 import { localCache } from '@/utils/cache'
 import router from '@/router'
-import { clearFirstMenu, mapMenusToRoutes } from '@/utils/map-menus'
+import {
+  clearFirstMenu,
+  mapMenusToPermissions,
+  mapMenusToRoutes
+} from '@/utils/map-menus'
 
 // Module的泛型参数，第一个是模块的State,第二个是全局State
 const loginMoudle: Module<ILoginState, IRootState> = {
@@ -18,7 +22,8 @@ const loginMoudle: Module<ILoginState, IRootState> = {
     return {
       token: '',
       userInfo: {},
-      userMenus: []
+      userMenus: [],
+      permissions: []
     }
   },
   mutations: {
@@ -38,6 +43,10 @@ const loginMoudle: Module<ILoginState, IRootState> = {
       routes.forEach((route) => {
         router.addRoute('main', route)
       })
+
+      // 获取用户菜单权限
+      const permissions = mapMenusToPermissions(userMenus)
+      state.permissions = permissions
     }
   },
   getters: {},

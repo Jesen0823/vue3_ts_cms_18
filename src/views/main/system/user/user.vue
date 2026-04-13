@@ -31,7 +31,7 @@ export default defineComponent({
     PageContent
   },
   setup() {
-    const [handleResetClick, handleSearchClick, refPageContent] =
+    const [refPageContent, handleResetClick, handleSearchClick] =
       usePageSearch()
 
     return {
