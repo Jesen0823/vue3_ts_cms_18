@@ -2,7 +2,12 @@ import PageModal from '@/components/page-modal'
 import { ref } from 'vue'
 import type { Ref } from 'vue'
 
-export function usePageModal(): [
+type CallbackFnType = () => void
+
+export function usePageModal(
+  createCb?: CallbackFnType,
+  updateCb?: CallbackFnType
+): [
   Ref<InstanceType<typeof PageModal> | null>,
   Ref<Record<string, any>>,
   () => void,
@@ -15,6 +20,7 @@ export function usePageModal(): [
     if ((refModalPage as any).value) {
       ;(refModalPage as any).value.dialogVisible = true
     }
+    createCb && createCb()
   }
 
   const eventHandleUpdate = (item: any) => {
@@ -23,6 +29,7 @@ export function usePageModal(): [
     if ((refModalPage as any).value) {
       ;(refModalPage as any).value.dialogVisible = true
     }
+    updateCb && updateCb()
     console.log('usePageModal', 'eventHandleUpdate, defaultInfo: ', defaultInfo)
   }
 

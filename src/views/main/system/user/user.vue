@@ -45,8 +45,21 @@ export default defineComponent({
   setup() {
     const [refPageContent, handleResetClick, handleSearchClick] =
       usePageSearch()
+
+    const createCallback = () => {
+      const passwordItem = modalConfig.formItems.find(
+        (item) => item.field === 'password'
+      )
+      passwordItem!.isHidden = false
+    }
+    const updateCallback = () => {
+      const passwordItem = modalConfig.formItems.find(
+        (item) => item.field === 'password'
+      )
+      passwordItem!.isHidden = true
+    }
     const [refModalPage, defaultInfo, eventHandleCreate, eventHandleUpdate] =
-      usePageModal()
+      usePageModal(createCallback, updateCallback)
 
     return {
       searchFormConfig,
