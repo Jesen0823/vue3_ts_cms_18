@@ -7,3 +7,8 @@ export function getPageListData(url: string, queryInfo: any) {
     data: queryInfo
   })
 }
+
+// url: /users/id
+export function deletePageData(url: string) {
+  return cmRequest.delete<IDataType>({ url: url })
+}

@@ -45,8 +45,8 @@
         <!-- v-model:current-page="page.currentPage" -->
         <!-- v-model:page-size="page.pageSize" -->
         <el-pagination
-          current-page="page.currentPage"
-          page-size="page.pageSize"
+          :current-page="page.currentPage"
+          :page-size="page.pageSize"
           :page-sizes="[5, 10, 20, 30]"
           :disabled="disabled"
           :background="background"

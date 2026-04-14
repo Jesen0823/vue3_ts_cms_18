@@ -1,7 +1,12 @@
 import PageContent from '@/components/page-content'
 import { ref } from 'vue'
+import type { Ref } from 'vue'
 
-export function usePageSearch() {
+export function usePageSearch(): [
+  Ref<InstanceType<typeof PageContent> | null>,
+  () => void,
+  (queryInfo: any) => void
+] {
   const refPageContent = ref<InstanceType<typeof PageContent> | null>(null)
   const handleResetClick = () => {
     ;(refPageContent as any).value?.getPageData?.()
@@ -10,6 +15,5 @@ export function usePageSearch() {
     ;(refPageContent as any).value?.getPageData?.(queryInfo)
   }
 
-  // 也可以返回一个对象
   return [refPageContent, handleResetClick, handleSearchClick]
 }

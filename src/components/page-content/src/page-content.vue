@@ -9,7 +9,11 @@
     >
       <!-- header的插槽 -->
       <template #header-handler>
-        <el-button type="primary" size="small" v-if="isCreate"
+        <el-button
+          type="primary"
+          size="small"
+          v-if="isCreate"
+          @click="handleCreateClick"
           >新建用户</el-button
         >
       </template>
@@ -30,12 +34,20 @@
         <span>{{ $filters.formatTime(scope.row.updateAt) }}</span>
       </template>
       <!--不用拿数据，所以不用作用域scope-->
-      <template #handler>
+      <template #handler="scope">
         <div class="handlee-btns">
-          <el-button :disabled="!isUpdate" size="small" type="text"
+          <el-button
+            :disabled="!isUpdate"
+            size="small"
+            type="text"
+            @click="handleUpdateClick(scope.row)"
             >编辑</el-button
           >
-          <el-button :disabled="!isDelete" size="small" type="text"
+          <el-button
+            :disabled="!isDelete"
+            size="small"
+            type="text"
+            @click="handleDeleteClick(scope.row)"
             >删除</el-button
           >
         </div>
@@ -76,7 +88,8 @@ export default defineComponent({
   components: {
     CmTable
   },
-  setup(props) {
+  emits: ['createBtnClick', 'updateBtnClick'],
+  setup(props, { emit }) {
     const store = useStore()
 
     // 获取权限
@@ -87,7 +100,7 @@ export default defineComponent({
     console.log('permission:', isCreate, isUpdate, isDelete, isQuery)
 
     // 双向绑定pageInfo
-    const pageInfo = ref({ currentPage: 0, pageSize: 10 })
+    const pageInfo = ref({ currentPage: 1, pageSize: 10 })
     watch(pageInfo, () => {
       getPageData()
     })
@@ -100,7 +113,7 @@ export default defineComponent({
         pageUrl: 'users/list',
         queryInfo: {
           offset:
-            (pageInfo as any).value.currentPage *
+            ((pageInfo as any).value.currentPage - 1) *
             (pageInfo as any).value.pageSize,
           size: (pageInfo as any).value.pageSize,
           ...querryInfo
@@ -131,6 +144,25 @@ export default defineComponent({
       }
     )
 
+    // 删除操作
+    const handleDeleteClick = (item: any) => {
+      store.dispatch('systemModule/deletePageDataAction', {
+        pageName: props.pageName,
+        id: item.id
+      })
+    }
+
+    // 新建操作
+    const handleCreateClick = () => {
+      emit('createBtnClick')
+    }
+
+    // 编辑操作
+    const handleUpdateClick = (item: any) => {
+      console.log('page-content', 'handleUpdateClick,item:', item)
+      emit('updateBtnClick', item)
+    }
+
     return {
       dataList,
       getPageData,
@@ -139,7 +171,10 @@ export default defineComponent({
       otherPropSlots,
       isCreate,
       isUpdate,
-      isDelete
+      isDelete,
+      handleDeleteClick,
+      handleCreateClick,
+      handleUpdateClick
     }
   }
 })
