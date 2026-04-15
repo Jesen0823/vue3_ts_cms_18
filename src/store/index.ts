@@ -26,14 +26,14 @@ const store = createStore<IRootState>({
     async getInitialDataAction({ commit }) {
       const departmentResult = await getPageListData('/department/list', {
         offset: 0,
-        size: 100
+        size: 999
       })
       console.log('department:', departmentResult.data)
       const { list: departmentList } = departmentResult.data
 
       const roleResult = await getPageListData('/role/list', {
         offset: 0,
-        size: 100
+        size: 999
       })
       const { list: roleList } = roleResult.data
 
@@ -50,7 +50,6 @@ const store = createStore<IRootState>({
 
 export function setupStore() {
   store.dispatch('loginMoudle/loadLocalLogin')
-  store.dispatch('getInitialDataAction')
 }
 
 // 包装useStore

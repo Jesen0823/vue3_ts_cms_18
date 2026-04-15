@@ -7,7 +7,7 @@ export const accountRules = {
       trigger: 'blur'
     },
     {
-      pattern: /^[a-z0-9]{5,10}$/,
+      pattern: /^[a-zA-Z0-9]{5,10}$/,
       message: '用户名必须是5-10个字母或数字',
       trigger: 'blur'
     }
@@ -19,7 +19,7 @@ export const accountRules = {
       trigger: 'blur'
     },
     {
-      pattern: /^[a-z0-9]{5,}$/,
+      pattern: /^[a-zA-Z0-9]{5,}$/,
       message: '密码不能少于5个字母或数字',
       trigger: 'blur'
     }
