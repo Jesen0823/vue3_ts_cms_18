@@ -12,6 +12,7 @@
         v-model="formData"
         v-bind="modalConfig"
       ></c-m-form>
+      <slot></slot>
       <template #footer>
         <div class="dialog-footer">
           <el-button @click="dialogVisible = false">取消</el-button>
@@ -41,6 +42,10 @@ export default defineComponent({
     pageName: {
       type: String,
       required: true
+    },
+    otherInfo: {
+      type: Object,
+      default: () => ({})
     }
   },
   components: {
@@ -80,14 +85,14 @@ export default defineComponent({
         // 编辑
         store.dispatch('systemModule/updatePageDataAction', {
           pageName: props.pageName,
-          editData: { ...(formData as any).value },
+          editData: { ...(formData as any).value, ...props.otherInfo },
           id: props.defaultInfo.id
         })
       } else {
         // 新建
         store.dispatch('systemModule/createPageDataAction', {
           pageName: props.pageName,
-          newData: { ...(formData as any).value }
+          newData: { ...(formData as any).value, ...props.otherInfo }
         })
       }
       ;(dialogVisible as any).value = false

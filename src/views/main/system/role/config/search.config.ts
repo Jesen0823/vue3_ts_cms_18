@@ -12,9 +12,9 @@ export const searchFormConfig: IForm = {
     {
       field: 'intro',
       type: 'input',
-      label: '权限描述',
+      label: '角色描述',
       rules: [],
-      placeholder: '请输入权限描述'
+      placeholder: '请输入角色描述'
     },
     {
       field: 'createTime',
