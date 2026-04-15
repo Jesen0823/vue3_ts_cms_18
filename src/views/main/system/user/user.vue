@@ -7,21 +7,22 @@
     />
     <page-content
       ref="refPageContent"
-      :contentTableConfig="contentTableConfig"
       pageName="users"
+      :contentTableConfig="contentTableConfig"
       @createBtnClick="eventHandleCreate"
       @updateBtnClick="eventHandleUpdate"
     />
     <page-modal
-      :defaultInfo="defaultInfo"
       ref="refModalPage"
-      :modalConfig="modalConfig"
+      pageName="users"
+      :defaultInfo="defaultInfo"
+      :modalConfig="modalConfigRef"
     ></page-modal>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { computed, defineComponent } from 'vue'
 
 import PageSearch from '@/components/page-search'
 import { searchFormConfig } from './config/search.config'
@@ -34,6 +35,7 @@ import { usePageSearch } from '@/hooks/usePageSearch'
 import { modalConfig } from './config/modal.config'
 import PageModal from '@/components/page-modal'
 import { usePageModal } from '@/hooks/usePageModal'
+import { useStore } from '@/store'
 
 export default defineComponent({
   name: 'user',
@@ -46,6 +48,7 @@ export default defineComponent({
     const [refPageContent, handleResetClick, handleSearchClick] =
       usePageSearch()
 
+    // 对弹窗中密码选项的处理：
     const createCallback = () => {
       const passwordItem = modalConfig.formItems.find(
         (item) => item.field === 'password'
@@ -58,6 +61,28 @@ export default defineComponent({
       )
       passwordItem!.isHidden = true
     }
+
+    // 对弹窗中部门与角色列表的处理
+    const store = useStore()
+    const modalConfigRef = computed(() => {
+      const departmentItem = modalConfig.formItems.find(
+        (item) => item.field === 'departmentId'
+      )
+      departmentItem!.options = store.state.entireDepartment.map((item) => {
+        return { title: item.name, value: item.id }
+      })
+
+      const roleItem = modalConfig.formItems.find(
+        (item) => item.field === 'roleId'
+      )
+      roleItem!.options = store.state.entireRole.map((item) => {
+        return { title: item.name, value: item.id }
+      })
+
+      return modalConfig
+    })
+
+    // 使用hook拿取公共处理逻辑
     const [refModalPage, defaultInfo, eventHandleCreate, eventHandleUpdate] =
       usePageModal(createCallback, updateCallback)
 
@@ -67,7 +92,7 @@ export default defineComponent({
       handleResetClick,
       handleSearchClick,
       refPageContent,
-      modalConfig,
+      modalConfigRef,
       refModalPage,
       eventHandleCreate,
       eventHandleUpdate,

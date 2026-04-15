@@ -28,6 +28,16 @@ export const modalConfig: IForm = {
       placeholder: '请输入电话号码'
     },
     {
+      field: 'enable',
+      type: 'select',
+      label: '状态',
+      placeholder: '请选择状态',
+      options: [
+        { value: 1, title: '启用' },
+        { value: 0, title: '禁用' }
+      ]
+    },
+    {
       field: 'departmentId',
       type: 'select',
       label: '选择部门',

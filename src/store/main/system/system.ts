@@ -1,7 +1,12 @@
 import { Module } from 'vuex'
 import { ISystemState } from './types'
 import { IRootState } from '@/store/types'
-import { deletePageData, getPageListData } from '@/service/main/system/system'
+import {
+  createPageData,
+  deletePageData,
+  getPageListData,
+  updatePageData
+} from '@/service/main/system/system'
 import { upperFirstLetter } from '@/utils/string-util'
 
 const systemModule: Module<ISystemState, IRootState> = {
@@ -76,6 +81,37 @@ const systemModule: Module<ISystemState, IRootState> = {
       const pageUrl = `/${pageName}/${id}`
       await deletePageData(pageUrl)
       // 可以将搜索关键字存储在vuex共享，在这里获取queryInfo
+      dispatch('getPageListAction', {
+        pageName,
+        queryInfo: {
+          offset: 0,
+          size: 10
+        }
+      })
+    },
+
+    async createPageDataAction({ dispatch }, payload: any) {
+      const { pageName, newData } = payload
+      const pageUrl = `/${pageName}`
+      console.log('createPageDataAction,newData:', newData)
+      await createPageData(pageUrl, newData)
+
+      // 请求最新数据
+      dispatch('getPageListAction', {
+        pageName,
+        queryInfo: {
+          offset: 0,
+          size: 10
+        }
+      })
+    },
+
+    async updatePageDataAction({ dispatch }, payload: any) {
+      const { pageName, editData, id } = payload
+      const pageUrl = `/${pageName}/${id}`
+      await updatePageData(pageUrl, editData)
+
+      // 请求最新数据
       dispatch('getPageListAction', {
         pageName,
         queryInfo: {

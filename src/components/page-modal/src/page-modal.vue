@@ -15,7 +15,7 @@
       <template #footer>
         <div class="dialog-footer">
           <el-button @click="dialogVisible = false">取消</el-button>
-          <el-button type="primary" @click="dialogVisible = false">
+          <el-button type="primary" @click="handleConfirmClick">
             确定
           </el-button>
         </div>
@@ -27,6 +27,7 @@
 <script lang="ts">
 import { defineComponent, ref, watch } from 'vue'
 import CMForm from '@/base-ui/form'
+import { useStore } from '@/store'
 export default defineComponent({
   props: {
     modalConfig: {
@@ -36,6 +37,10 @@ export default defineComponent({
     defaultInfo: {
       type: Object,
       default: () => ({})
+    },
+    pageName: {
+      type: String,
+      required: true
     }
   },
   components: {
@@ -58,18 +63,40 @@ export default defineComponent({
     watch(
       () => props.defaultInfo,
       (newVal: any) => {
-        console.log('watch, defaultInfo: ', props.defaultInfo)
+        // console.log('watch, defaultInfo: ', props.defaultInfo)
         console.log('watch, newVal: ', newVal)
         for (const item of props.modalConfig.formItems) {
           ;(formData as any).value[`${item.field}`] = newVal[`${item.field}`]
         }
-        console.log('watch, formData: ', formData)
+        // console.log('watch, formData: ', (formData as any).value)
+        // console.log('watch, modalConfig: ', props.modalConfig)
       }
     )
 
+    // 点击确定按钮
+    const store = useStore()
+    const handleConfirmClick = () => {
+      if (Object.keys(props.defaultInfo).length) {
+        // 编辑
+        store.dispatch('systemModule/updatePageDataAction', {
+          pageName: props.pageName,
+          editData: { ...(formData as any).value },
+          id: props.defaultInfo.id
+        })
+      } else {
+        // 新建
+        store.dispatch('systemModule/createPageDataAction', {
+          pageName: props.pageName,
+          newData: { ...(formData as any).value }
+        })
+      }
+      ;(dialogVisible as any).value = false
+    }
+
     return {
       dialogVisible,
-      formData
+      formData,
+      handleConfirmClick
     }
   }
 })

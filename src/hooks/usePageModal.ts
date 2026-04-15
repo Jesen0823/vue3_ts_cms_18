@@ -17,6 +17,7 @@ export function usePageModal(
   const defaultInfo = ref<Record<string, any>>({})
 
   const eventHandleCreate = () => {
+    defaultInfo.value = {}
     if ((refModalPage as any).value) {
       ;(refModalPage as any).value.dialogVisible = true
     }

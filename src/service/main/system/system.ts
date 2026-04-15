@@ -12,3 +12,11 @@ export function getPageListData(url: string, queryInfo: any) {
 export function deletePageData(url: string) {
   return cmRequest.delete<IDataType>({ url: url })
 }
+
+export function createPageData(cUrl: string, cData: any) {
+  return cmRequest.post<IDataType>({ url: cUrl, data: cData })
+}
+
+export function updatePageData(eUrl: string, eData: any) {
+  return cmRequest.patch<IDataType>({ url: eUrl, data: eData })
+}
