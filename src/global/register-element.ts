@@ -33,7 +33,8 @@ import {
   ElPagination,
   ElImage,
   ElDialog,
-  ElTree
+  ElTree,
+  ElCard
 } from 'element-plus'
 import 'element-plus/theme-chalk/index.css' // 全局引入样式
 
@@ -73,7 +74,8 @@ const elComponents = [
   ElPagination,
   ElImage,
   ElDialog,
-  ElTree
+  ElTree,
+  ElCard
 ]
 
 export default function (app: App): void {
