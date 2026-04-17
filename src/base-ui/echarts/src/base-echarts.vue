@@ -6,7 +6,8 @@
 
 <script lang="ts" setup>
 import * as echarts from 'echarts'
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, watchEffect } from 'vue'
+import useEcharts from '../hooks/useEcharts'
 
 // eslint-disable-next-line no-undef
 const props = withDefaults(
@@ -25,9 +26,11 @@ const props = withDefaults(
 const echartDivRef = ref<HTMLElement>()
 
 onMounted(() => {
-  const echartsInstance = echarts.init(echartDivRef.value!)
-
-  echartsInstance.setOption(props.options)
+  const { setOptions } = useEcharts(echartDivRef.value!)
+  // 监听props数据options发生改变，重新set
+  watchEffect(() => {
+    setOptions(props.options)
+  })
 })
 </script>
 
