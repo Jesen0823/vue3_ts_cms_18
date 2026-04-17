@@ -67,42 +67,6 @@ export default defineComponent({
     MapEcharts
   },
   setup() {
-    const options = {
-      title: {
-        text: '这就是标题'
-      },
-      tooltip: {
-        trigger: 'axis',
-        axisPointer: {
-          type: 'cross'
-        }
-      },
-      legend: {
-        // Try 'horizontal'
-        orient: 'vertical',
-        right: 10,
-        top: 'center'
-      },
-      toolbox: {
-        show: true,
-        feature: {
-          restore: {},
-          saveAsImage: {}
-        }
-      },
-      dataset: {
-        source: [
-          ['product', '2015', '2016', '2017'],
-          ['Matcha Latte', 43.3, 85.8, 93.7],
-          ['Milk Tea', 83.1, 73.4, 55.1],
-          ['Cheese Cocoa', 86.4, 65.2, 82.5],
-          ['Walnut Brownie', 72.4, 53.9, 39.1]
-        ]
-      },
-      xAxis: { type: 'category' },
-      yAxis: {},
-      series: [{ type: 'bar' }, { type: 'bar' }, { type: 'bar' }]
-    }
     const store = useStore()
     store.dispatch('analysisModule/getDashbordDataAction')
 
@@ -141,7 +105,6 @@ export default defineComponent({
     })
 
     return {
-      options,
       categoryGoodsCount,
       categoryGoodsFavor,
       categoryGoodsSale,
