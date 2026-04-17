@@ -94,3 +94,39 @@ module.exports = {
 #### 1. 安装nomorlize-css
 
 `npm install normalize.css` 
+
+#### 2. Echarts安装
+
+![Echart](./capture/Echart.jpg)
+
+### 五.注意事项
+
+#### 1. <setup>使用注意事项
+
+```typescript
+// 错误原因：withDefaults 是 Vue <script setup> 的编译器宏，会自动注入
+// 如果手动导入 withDefaults，会导致冲突
+```
+`withDefaults` 是 Vue `<script setup>` 的**编译器宏**，会在编译时自动注入，不需要手动导入。如果手动从 `vue` 导入，就会导致：
+```
+Import declaration conflicts with local declaration of 'withDefaults'
+```
+```typescript
+// 错误：手动导入了 withDefaults
+import { onMounted, ref, defineProps, withDefaults } from 'vue'
+
+// 正确：移除 withDefaults 的导入
+import { onMounted, ref, defineProps } from 'vue'
+```
+
+** Vue 3 `<script setup>` 编译器宏列表**
+
+以下是 Vue 3 `<script setup>` 中不需要导入即可使用的编译器宏：
+
+| 宏名称 | 用途 |
+|--------|------|
+| `defineProps` | 声明组件 props |
+| `defineEmits` | 声明组件 emits |
+| `withDefaults` | 为 props 提供默认值 |
+| `defineExpose` | 暴露组件内部属性/方法 |
+| `defineOptions` | 定义组件选项 |

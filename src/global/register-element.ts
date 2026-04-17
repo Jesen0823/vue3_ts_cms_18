@@ -31,9 +31,13 @@ import {
   ElBreadcrumb,
   ElBreadcrumbItem,
   ElPagination,
-  ElImage
+  ElImage,
+  ElDialog,
+  ElTree,
+  ElCard
 } from 'element-plus'
-import 'element-plus/dist/index.css' // 全局引入样式
+import 'element-plus/theme-chalk/index.css' // 全局引入样式
+
 import { App } from 'vue'
 const elComponents = [
   ElButton,
@@ -68,7 +72,10 @@ const elComponents = [
   ElBreadcrumb,
   ElBreadcrumbItem,
   ElPagination,
-  ElImage
+  ElImage,
+  ElDialog,
+  ElTree,
+  ElCard
 ]
 
 export default function (app: App): void {

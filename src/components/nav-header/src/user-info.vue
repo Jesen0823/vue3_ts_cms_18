@@ -1,6 +1,6 @@
 <template>
   <div class="user-info">
-    <el-dropdown type="primary" @click="handleClick">
+    <el-dropdown type="primary" @command="handleInfoCommand">
       <span class="el-dropdown-link">
         <el-avatar
           size="small"
@@ -10,9 +10,11 @@
       </span>
       <template #dropdown>
         <el-dropdown-menu>
-          <el-dropdown-item icon="SoldOut">退出登录</el-dropdown-item>
-          <el-dropdown-item divided>用户信息</el-dropdown-item>
-          <el-dropdown-item>系统管理</el-dropdown-item>
+          <el-dropdown-item command="exit" icon="SoldOut"
+            >退出登录</el-dropdown-item
+          >
+          <el-dropdown-item command="info" divided>用户信息</el-dropdown-item>
+          <el-dropdown-item command="system">系统管理</el-dropdown-item>
         </el-dropdown-menu>
       </template>
     </el-dropdown>
@@ -21,16 +23,34 @@
 
 <script lang="ts">
 import { useStore } from '@/store'
+import { localCache } from '@/utils/cache'
 import { computed, defineComponent } from 'vue'
+import { useRouter } from 'vue-router'
 
 export default defineComponent({
   setup() {
     const store = useStore()
+    const router = useRouter()
     const name = computed(() => store.state.loginMoudle.userInfo.name)
-    const handleClick = () => {
-      console.log('handleClick')
+
+    const handleInfoCommand = (command: string) => {
+      switch (command) {
+        case 'exit':
+          localCache.deleteCache('token')
+          router.push('/main')
+          break
+        case 'info':
+          console.log('handleInfoCommand', command)
+          break
+        case 'system':
+          console.log('handleInfoCommand', command)
+          break
+        default:
+          console.log('handleInfoCommand', command)
+      }
     }
-    return { handleClick, name }
+
+    return { name, handleInfoCommand }
   }
 })
 </script>
